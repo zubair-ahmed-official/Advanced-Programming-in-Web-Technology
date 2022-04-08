@@ -42,3 +42,7 @@ Route::get("/delete_dis/get",[StudentsContoroller::class,'deleteDis']);
 Route::post("/add_doc/post",[StudentsContoroller::class,'addDoc']);
 Route::post("/edit_doc/post",[StudentsContoroller::class,'editDoc']);
 Route::get("/delete_doc/get",[StudentsContoroller::class,'deleteDoc']);
+
+Route::post('/med_dis/post', [StudentsContoroller::class,'store_MeDis']);
+Route::post("/edit_med_dis/post",[StudentsContoroller::class,'edit_MeDis']);
+Route::get("/delete_med_dis/get",[StudentsContoroller::class,'delete_MeDis']);

@@ -14,6 +14,8 @@ use App\Models\Disease;
 
 use App\Models\Doctor;
 
+use App\Models\Medicines_Diseases;
+
 class StudentsContoroller extends Controller
 {
     //
@@ -239,6 +241,44 @@ class StudentsContoroller extends Controller
             return response()->json(["Message"=>"Data Deletted Successfully"]);
         }
         return response()->json(["Message"=>"Data Deleting Failed"]);
+    }
+    public function store_MeDis(Request $request)
+    {
+        $md = new Medicines_Diseases;
+        
+        $md->Medicines_id = $request->Medicines_id;
+        $md->Diseases_id = $request->Diseases_id;
+        
+        if($md->save())
+        {
+            return response()->json(["Message"=>"Medicines & Diseases Information Merged Successfully"]);
+        }
+        return response()->json(["Message"=>"Merge Failed"]);
+    }
+
+    public function edit_MeDis(Request $request)
+    {
+        $md = new Medicines_Diseases();
+        $md->exists = true;
+        $md->id = $request->id;
+        $md->Medicines_id = $request->Medicines_id;
+        $md->Diseases_id = $request->Diseases_id;
+        
+        if($md->save())
+        {
+            return response()->json(["Message"=>"Medicines & Diseases Information Editted Successfully"]);
+        }
+        return response()->json(["Message"=>"Editted Merge Failed"]);
+    }
+    public function delete_MeDis(Request $req)
+    {
+        $st = Medicines_Diseases::where('id',$req->id)->delete();
+
+        if($st)
+        {
+            return response()->json(["Message"=>"Medicines & Diseases Information Deletted Successfully"]);
+        }
+        return response()->json(["Message"=>"Medicines & Diseases Information Deleting Failed"]);
     }
 
 }
