@@ -4,14 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Dept;
 
-class Student extends Model
+class Disease extends Model
 {
     use HasFactory;
-    
-    public function Dept()
-    {
-        return $this-> belongsTo(Dept::class,'did');
-    }
+    public $timestamps = false;
 }

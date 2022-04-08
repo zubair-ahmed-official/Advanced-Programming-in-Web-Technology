@@ -30,3 +30,15 @@ Route::get("/delete_person_dept/get",[StudentsContoroller::class,'deletePerson']
 Route::post("/add_dept/post",[StudentsContoroller::class,'addDept']);
 Route::post("/edit_dept/post",[StudentsContoroller::class,'editDept']);
 Route::get("/delete_dept/get",[StudentsContoroller::class,'deleteDept']);
+
+Route::post("/add_med/post",[StudentsContoroller::class,'addMed']);
+Route::post("/edit_med/post",[StudentsContoroller::class,'editMed']);
+Route::get("/delete_med/get",[StudentsContoroller::class,'deleteMed']);
+
+Route::post("/add_dis/post",[StudentsContoroller::class,'addDis']);
+Route::post("/edit_dis/post",[StudentsContoroller::class,'editDis']);
+Route::get("/delete_dis/get",[StudentsContoroller::class,'deleteDis']);
+
+Route::post("/add_doc/post",[StudentsContoroller::class,'addDoc']);
+Route::post("/edit_doc/post",[StudentsContoroller::class,'editDoc']);
+Route::get("/delete_doc/get",[StudentsContoroller::class,'deleteDoc']);
