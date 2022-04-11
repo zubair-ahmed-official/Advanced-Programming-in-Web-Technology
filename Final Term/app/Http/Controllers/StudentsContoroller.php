@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\SendMail;
+
 use App\Models\Student;
 
 use App\Models\Dept;
@@ -113,6 +117,22 @@ class StudentsContoroller extends Controller
 
     public function addMed(Request $req)
     {
+        $req->validate(
+            [
+              'name'=>'required|unique:medicines,name', 
+              'disease'=>'required',
+              'details'=>'required',
+              'price'=>'required|regex:/^[0-9]+$/',
+            ],
+            [
+              'name.required'=>'Please Enter a valid Name',
+              'disease.required'=>'Please Enter a valid Disease',
+              'details.required'=>'Please Enter a valid Details',
+              'price.required'=>'Please Enter a valid Price',
+              'price.regex'=>'Please Enter a Numeric Price',
+            ]
+          );
+
         $med = new Medicine();
         $med->name = $req->name;
         $med->disease = $req->disease;
@@ -128,6 +148,24 @@ class StudentsContoroller extends Controller
 
     public function editMed(Request $req)
     {
+        $req->validate(
+            [
+              'id'=>'required', 
+              'name'=>'required|unique:medicines,name', 
+              'disease'=>'required',
+              'details'=>'required',
+              'price'=>'required|regex:/^[0-9]+$/',
+            ],
+            [
+              'id.required'=>'Please Enter a valid id',
+              'name.required'=>'Please Enter a valid Name',
+              'disease.required'=>'Please Enter a valid Disease',
+              'details.required'=>'Please Enter a valid Details',
+              'price.required'=>'Please Enter a valid Price',
+              'price.regex'=>'Please Enter a Numeric Price',
+            ]
+          );
+
         $med = new Medicine();
         $med->exists = true;
         $med->id = $req->id;
@@ -157,6 +195,19 @@ class StudentsContoroller extends Controller
 
     public function addDis(Request $req)
     {
+        $req->validate(
+            [
+              'name'=>'required|unique:diseases,name', 
+              'medicine'=>'required',
+              'details'=>'required'
+            ],
+            [
+              'name.required'=>'Please Enter a valid Name',
+              'medicine.required'=>'Please Enter a valid medicine',
+              'details.required'=>'Please Enter a valid Details'
+            ]
+          );
+
         $dis = new Disease();
         $dis->name = $req->name;
         $dis->medicine = $req->medicine;
@@ -170,6 +221,21 @@ class StudentsContoroller extends Controller
     }
     public function editDis(Request $req)
     {
+        $req->validate(
+            [
+              'id'=>'required',
+              'name'=>'required|unique:diseases,name', 
+              'medicine'=>'required',
+              'details'=>'required',
+            ],
+            [
+              'id.required'=>'Please Enter a valid id',
+              'name.required'=>'Please Enter a valid Name',
+              'medicine.required'=>'Please Enter a valid medicine',
+              'details.required'=>'Please Enter a valid Details',
+            ]
+          );
+
         $dis = new Disease();
         $dis->exists = true;
         $dis->id = $req->id;
@@ -197,6 +263,27 @@ class StudentsContoroller extends Controller
 
     public function addDoc(Request $req)
     {
+        $req->validate(
+            [
+              'name'=>'required', 
+              'phone'=>'required|unique:doctors,phone|numeric|regex:/(01)[0-9]{9}/',
+              'email'=>'required|email|unique:doctors,email',
+              'department'=>'required',
+              'bio'=>'required',
+              'joining_date'=>'required'
+            ],
+            [
+                
+                'name.required'=>'Please Enter a valid Name',
+                'phone.required'=>'Please Enter a valid medicine',
+                'email.required'=>'Please Enter a valid Details',
+                'department.required'=>'Please Enter a valid Details',
+                'bio.required'=>'Please Enter a valid Details',
+                'joining_date.required'=>'Please Enter a valid Details',
+
+              ]
+          );
+          
         $st = new Doctor();
         $st->name = $req->name;
         $st->phone = $req->phone;
@@ -214,6 +301,27 @@ class StudentsContoroller extends Controller
 
     public function editDoc(Request $req)
     {
+        $req->validate(
+            [
+              'id'=>'required',
+              'name'=>'required', 
+              'phone'=>'required|unique:doctors,phone',
+              'email'=>'required|email|unique:doctors,email',
+              'department'=>'required',
+              'bio'=>'required',
+              'joining_date'=>'required'
+            ],
+            [
+                'id.required'=>'Please Enter a valid id',
+                'name.required'=>'Please Enter a valid Name',
+                'phone.required'=>'Please Enter a valid medicine',
+                'email.required'=>'Please Enter a valid Details',
+                'department.required'=>'Please Enter a valid Details',
+                'bio.required'=>'Please Enter a valid Details',
+                'joining_date.required'=>'Please Enter a valid Details',
+
+            ]
+          );
         $st = new Doctor();
         $st->exists = true;
         $st->id = $req->id;
@@ -244,6 +352,7 @@ class StudentsContoroller extends Controller
     }
     public function store_MeDis(Request $request)
     {
+        
         $md = new Medicines_Diseases;
         
         $md->Medicines_id = $request->Medicines_id;
@@ -258,6 +367,7 @@ class StudentsContoroller extends Controller
 
     public function edit_MeDis(Request $request)
     {
+        
         $md = new Medicines_Diseases();
         $md->exists = true;
         $md->id = $request->id;
@@ -279,6 +389,28 @@ class StudentsContoroller extends Controller
             return response()->json(["Message"=>"Medicines & Diseases Information Deletted Successfully"]);
         }
         return response()->json(["Message"=>"Medicines & Diseases Information Deleting Failed"]);
+    }
+
+    //////////////////
+
+    public static function sendSignupEmail(){
+       $email= "saad03261@gmail.com";
+       $data=
+       [
+           "name" => "Zubair Ahmed"
+       ];
+        Mail::to($email)->send(new SendMail($data));
+    }
+
+
+    public function loginUser()
+    {
+        return view('All_user.login');
+    }
+
+    public function register()
+    {
+        return view('All_user.register');
     }
 
 }

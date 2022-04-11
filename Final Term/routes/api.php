@@ -46,3 +46,5 @@ Route::get("/delete_doc/get",[StudentsContoroller::class,'deleteDoc']);
 Route::post('/med_dis/post', [StudentsContoroller::class,'store_MeDis']);
 Route::post("/edit_med_dis/post",[StudentsContoroller::class,'edit_MeDis']);
 Route::get("/delete_med_dis/get",[StudentsContoroller::class,'delete_MeDis']);
+
+Route::post("/mail/post",[StudentsContoroller::class,'sendSignupEmail']);
