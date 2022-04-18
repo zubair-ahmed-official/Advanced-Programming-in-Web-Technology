@@ -18,11 +18,72 @@ use App\Models\Disease;
 
 use App\Models\Doctor;
 
+use App\Models\All_user;
+
 use App\Models\Medicines_Diseases;
 
 class StudentsContoroller extends Controller
 {
     //
+    public function Register_(Request $req)
+    {
+        $req->validate(
+            [
+              'username'=>'required|unique:all_users,username', 
+              'password'=>'required',
+              'name'=>'required',
+              'gender'=>'required',
+              'email'=>'required',
+              'phone'=>'required',
+              'address'=>'required',
+            ],
+            [
+              'username.required'=>'Please Enter a valid username',
+              'password.required'=>'Please Enter a valid password',
+              'name.required'=>'Please Enter a valid name',
+              'gender.required'=>'Please Enter a valid gender',
+              'email.required'=>'Please Enter a valid email',
+              'phone.required'=>'Please Enter a valid phone',
+              'address.required'=>'Please Enter a valid address',
+            ]
+          );
+
+        $st = new All_user();
+        $st->username = $req->username;
+        $st->password = md5($req->password);
+        $st->name = $req->name;
+        $st->gender = $req->gender;
+        $st->email = $req->email;
+        $st->phone = $req->phone;
+        $st->address = $req->address;
+        if($st->save())
+        {
+            return response()->json(["Message"=>"Registered Successfully"]);
+        }
+        return response()->json(["Message"=>"Registration Failed"]);
+    }
+
+    public function Login(Request $req)
+    {
+        /*$req->validate(
+            [
+              'username'=>'required|unique:all_users,username', 
+              'password'=>'required'
+            ],
+            [
+              'username.required'=>'Please Enter a valid Name',
+              'password.required'=>'Please Enter a valid Disease',
+            ]
+          );*/
+        $al = All_user::where('username',$req->username)->where('password',md5($req->password))->first();
+        
+        if($al)
+        {
+            return response()->json(["succmsg"=>"Login Successfully"]);
+        }
+        return response()->json(["errmsg"=>"Login Failed"]);
+    }
+
     public function getPerson()
     {
         $st = Student::all();
@@ -305,8 +366,8 @@ class StudentsContoroller extends Controller
             [
               'id'=>'required',
               'name'=>'required', 
-              'phone'=>'required|unique:doctors,phone',
-              'email'=>'required|email|unique:doctors,email',
+              'phone'=>'required',
+              'email'=>'required|email',
               'department'=>'required',
               'bio'=>'required',
               'joining_date'=>'required'
